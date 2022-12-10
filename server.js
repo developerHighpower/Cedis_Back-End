@@ -22,7 +22,6 @@ app.use(express.static(__dirname + '/public/'))
 
 app.post('/login', (req, res) => {
     let query = `SELECT * FROM users WHERE username = '${req.body.username}' AND password = '${req.body.password}'`
-    console.log(query)
     mysqlCon.query(query, (err, rows) => {
         if(err){
             console.log(err)
@@ -52,7 +51,10 @@ app.post('/login', (req, res) => {
     })
 })
 
-app.listen(7070, ()=> {
-    console.log('Sever listening on port 7070')
+const dates = require('./routes/dates')
+app.use('/dates', dates)
+
+app.listen(7090, ()=> {
+    console.log('Sever listening on port 7090')
 })
 
