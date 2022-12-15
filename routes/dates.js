@@ -102,4 +102,62 @@ router.post('/checks', veryfyToken, (req, res) => {
     })
 })
 
+router.post('/users', veryfyToken, (req, res) => {
+    let query = `SELECT * FROM users`
+    mysqlCon.query(query, (err, rows) => {
+        if(err){
+            res.json({status: false, error: err})
+        }
+        else{
+            res.json({status: true, data: rows})
+        }
+    })
+})
+
+router.post('/delete', veryfyToken, (req, res) => {
+    let query = `DELETE FROM users WHERE id = ${req.body.id}`
+    mysqlCon.query(query, (err, rows) => {
+        if(err){
+            console.log(err)
+            res.json({status: false, error: err})
+        }
+        else{
+            res.json({status: true})
+        }
+    })
+})
+
+router.post('/createUser', veryfyToken, (req, res) => {
+    let vls = {
+        username: req.body.user,
+        name: req.body.name,
+        type: req.body.type.value,
+        password: req.body.password
+    }
+    let query = `INSERT INTO users SET ?`
+    mysqlCon.query(query, vls, (err, rows) => {
+        if(err){
+            console.log(err)
+            res.json({status: false, error: err})
+        }
+        else{
+            res.json({status: true})
+        }
+    })
+})
+
+router.post('/update', veryfyToken, (req, res) => {
+    let query = `UPDATE users SET username = '${req.body.user}', name = '${req.body.name}', password = '${req.body.password}', 
+    type = ${parseInt(req.body.type.value)} WHERE id = ${parseInt(req.body.id)}`
+    mysqlCon.query(query, (err, rows) => {
+        if(err){
+            console.log(err)
+            res.json({status: false, error: err})
+        }
+        else{
+            res.json({status: true})
+        }
+    })
+})
+
 module.exports = router
