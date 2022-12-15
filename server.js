@@ -65,8 +65,15 @@ app.use('/dates', dates)
 
 io.on('connection', (socket) => {
     console.log(`A user conected ${socket.id} !`)
-    socket.on('disconnected', () => {
-        console.log('User disconected !')
+
+    // ESCUCHA EL EVENTO DE DESCONEXION
+    socket.on('disconnect', ()=> {
+        console.log('User disconnected')
+    })
+
+    // ESCUCHA EL ENVIO DE CITA
+    socket.on('addCita', (data)=> {
+        io.emit('addCita2', data)
     })
 })
 
