@@ -18,6 +18,15 @@ setInterval(() => {
     mysqlCon.query('SELECT 1')
 }, 100000)
 
+const server = require('http').createServer(app)
+
+const io = require('socket.io')(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+})
+
 app.use(express.static(__dirname + '/public/'))
 
 app.post('/login', (req, res) => {
@@ -54,7 +63,14 @@ app.post('/login', (req, res) => {
 const dates = require('./routes/dates')
 app.use('/dates', dates)
 
-app.listen(7090, ()=> {
+io.on('connection', (socket) => {
+    console.log(`A user conected ${socket.id} !`)
+    socket.on('disconnected', () => {
+        console.log('User disconected !')
+    })
+})
+
+server.listen(7090, ()=> {
     console.log('Sever listening on port 7090')
 })
 
