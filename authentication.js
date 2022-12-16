@@ -1,9 +1,8 @@
 var jwt = require('jsonwebtoken')
 function verifyToken (req, res, next) {
-    let token = null
+    let token
     if(req.headers['authorization']){
         token = req.headers['authorization'].substring(7, req.headers['authorization'].length)
-        token = token.substring(1, (token.length - 1))
     }
     else{
         token = req.body.token
