@@ -11,7 +11,7 @@ var mysqlCon = mysql.createConnection(db.mysqlData)
 
 mysqlCon.connect()
 
-setInterval(function () {
+setInterval(function () {   
     mysqlCon.query('SELECT 1')
 }, 10000)
 
@@ -218,6 +218,10 @@ router.post('/update', veryfyToken, (req, res) => {
             res.json({status: true})
         }
     })
+})
+
+router.post('/getfiles', veryfyToken, (req, res) => {
+    res.sendFile(savePath + '' + req.body.name)
 })
 
 module.exports = router
