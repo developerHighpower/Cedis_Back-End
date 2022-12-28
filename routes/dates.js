@@ -1,6 +1,7 @@
 const db = require('../database')
 const express = require('express')
 const mysql = require('mysql')
+const path = require('path')
 const multer = require('multer')
 const veryfyToken = require('../authentication')
 var router = express.Router()
@@ -15,8 +16,8 @@ setInterval(function () {
     mysqlCon.query('SELECT 1')
 }, 10000)
 
-//let savePath = `\\\\192.168.1.229\\Desarrollos\\CedisDocs\\`
-let savePath = './images/'
+let savePath = `\\\\192.168.1.229\\Desarrollos\\CedisDocs\\`
+//let savePath = './images/'
 
 const storageDates = multer.diskStorage({
     destination: function(req, file, cb){
@@ -221,7 +222,7 @@ router.post('/update', veryfyToken, (req, res) => {
 })
 
 router.post('/getfiles', veryfyToken, (req, res) => {
-    res.sendFile(savePath + '' + req.body.name)
+    res.sendFile(path.resolve(savePath + '' + req.body.name))
 })
 
 module.exports = router
